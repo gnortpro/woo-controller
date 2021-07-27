@@ -11,9 +11,9 @@
  * Copyright (c) 2000000, Woo Controller
  *****************************/
 
-class CKWPPExamplePlugin
+class WooControllerPlugin
 {
-    private static $ckwppe_instance;
+    private static $wc_instance;
 
     private function __construct()
     {
@@ -25,12 +25,12 @@ class CKWPPExamplePlugin
 
     public static function getInstance()
     {
-        if (!self::$ckwppe_instance)
+        if (!self::$wc_instance)
         {
-            self::$ckwppe_instance = new CKWPPExamplePlugin();
+            self::$wc_instance = new WooControllerPlugin();
         }
 
-        return self::$ckwppe_instance;
+        return self::$wc_instance;
     }
 
     private function constants()
@@ -188,5 +188,5 @@ class CKWPPExamplePlugin
     }
 }
 
-$ckwpee = CKWPPExamplePlugin::getInstance();
+$ckwpee = WooControllerPlugin::getInstance();
 
