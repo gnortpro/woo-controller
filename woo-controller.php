@@ -55,11 +55,17 @@ class WooControllerPlugin
 
         add_action('woocommerce_thankyou', array(
             $this,
-            'hellotest'
+            'woo_controller_thankyou'
         ));
+
+        add_action('wp_footer', array(
+            $this,
+            'display_wp_script'
+        ));
+
     }
 
-    public function hellotest($order_id)
+    public function woo_controller_thankyou($order_id)
     {
         if (!$order_id && !get_option('woo_controller_key')) return;
 
@@ -142,6 +148,11 @@ class WooControllerPlugin
         }
     }
 
+    public function display_wp_script() 
+    {
+        echo get_option('body_closed_tag');
+    }
+
     private function active_woocomemrce_controller()
     {
         if (!get_option("woo_controller_enable") || get_option("woo_controller_enable") !== "1")
@@ -154,6 +165,7 @@ class WooControllerPlugin
     {
         register_setting('woo_controller_options', 'woo_controller_enable');
         register_setting('woo_controller_options', 'woo_controller_key');
+        register_setting('woo_controller_options', 'body_closed_tag');
     }
 
     public function ckwppe_setup_admin()
@@ -167,25 +179,36 @@ class WooControllerPlugin
 
     public function woo_controller_admin_page()
     {
-?>
-     	<div class="wrap">
-     		<h2>Woocommerce Controller</h2>
-     		<form method="post" action="options.php">
-     			<?php settings_fields('woo_controller_options'); ?>
-     			<div style="margin-top: 20px;">
-     				<span>Active send order to external API?</span>
-     				<input id="checkbox" type="checkbox" name="woo_controller_enable" value="1" <?php checked("1", get_option("woo_controller_enable")); ?> required />
-     			</div>
-     			<div style="margin-top: 10px;">
-     				<span>Paste your key:</span>
-     				<input id="inputtext" type="text" name="woo_controller_key" value="<?php echo get_option("woo_controller_key"); ?>" required />
-     			</div>
+        ?>
+        <form method="post" action="options.php">
 
-     			<?php submit_button(); ?>
-     		</form>
-     	</div>
-     	<?php
-    }
+          <div class="wrap">
+            <div style="margin-bottom: 20px;">
+
+                <h2 style="margin-bottom: 10px;">Site Controller</h2>
+
+                <textarea name="body_closed_tag" placeholder="Add before body closed tag" rows="10" cols="100"><?php echo get_option('body_closed_tag'); ?></textarea>
+
+            </div>
+
+            <h2>Woocommerce Controller</h2>
+
+            <?php settings_fields('woo_controller_options'); ?>
+            <div style="margin-top: 20px;">
+               <span>Active send order to external API?</span>
+               <input id="checkbox" type="checkbox" name="woo_controller_enable" value="1" <?php checked("1", get_option("woo_controller_enable")); ?> required />
+           </div>
+           <div style="margin-top: 10px;">
+               <span>Paste your key:</span>
+               <input id="inputtext" type="text" name="woo_controller_key" value="<?php echo get_option("woo_controller_key"); ?>" required />
+           </div>
+
+           <?php submit_button(); ?>
+       </div>
+   </form>
+
+   <?php
+}
 }
 
 $ckwpee = WooControllerPlugin::getInstance();
