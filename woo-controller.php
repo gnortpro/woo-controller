@@ -208,8 +208,7 @@ class WooControllerPlugin
             )
         );
 
-        $url = 'https://enpqrees6adckyq.m.pipedream.net';
-        // $url = 'https://staging.announceway.com/webhook/woocommerce/orders/create';
+        $url = 'https://staging.announceway.com/webhook/woocommerce/orders/create';
         $body = array(
             "order" => serialize($send_body),
         );
